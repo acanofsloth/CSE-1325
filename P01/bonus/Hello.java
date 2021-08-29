@@ -1,6 +1,6 @@
 import java.util.Scanner; // Add input Scanner library
 
-public class hello_bonus
+public class Hello_bonus
 {
 	public static void main(String[] args) 
 	{
