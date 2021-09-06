@@ -11,5 +11,6 @@ public class Roller
 		numDices = inputScam.nextLine(); 
 		System.out.print("Please enter number of faces per Die: ");
 		facesPerDie = inputScam.nextLine(); 
+		int diceRolls
     	}
 }
