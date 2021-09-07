@@ -11,7 +11,8 @@ public class Roller
 	{
 		// Declare Variables
 		if(args.length != 2) throw new IllegalArgumentException("usage: java Roll [#dice] [#sides]"); 
-		int numDices = Integer.parseInt(args[0]), facesPerDie = Integer.parseInt(args[1]), numSum = 0, numAverage = 0;
+		int numDices = Integer.parseInt(args[0]), facesPerDie = Integer.parseInt(args[1]), numSum = 0;
+		double numAverage;
 		int[] diceRolls = new int[numDices]; // Create array sizeOf # of Dices 
 
 		// Add Rolls to array
@@ -22,7 +23,7 @@ public class Roller
 			numSum = numSum + diceRolls[i]; // Add for sum count
 		}
 		
-		numAverage = numSum/numDices; // Calculate Average of all Dice Rolls
+		numAverage = (double)numSum/(double)numDices; // Calculate Average of all Dice Rolls
 		
 		// Organize and Print
 		Arrays.sort(diceRolls);
@@ -30,6 +31,8 @@ public class Roller
 		{
 			System.out.print(diceRolls[i] + " ");
 		}
-		System.out.print(numSum + " " + numAverage);
+		System.out.println();
+		System.out.println("Sum=" + numSum);
+		System.out.println("Average=" + numAverage);
 	}
 }
