@@ -83,9 +83,9 @@ public class MainWin extends JFrame {
         JMenuItem mJava    = new JMenuItem("Java");
         JMenuItem mDonut   = new JMenuItem("Donut");
 	JMenuItem mCustomer   = new JMenuItem("Customer");
-	JMenuItem mProductList   = new JMenuItem("ProductList");
-	JMenuItem mCustomerList   = new JMenuItem("CustomerList");
 	JMenu     mView  = new JMenu("View");
+	JMenuItem mProducts   = new JMenuItem("Products");
+	JMenuItem mPeople   = new JMenuItem("People");
         JMenu     mHelp    = new JMenu("Help");
         JMenuItem mAbout   = new JMenuItem("About");
         
@@ -97,6 +97,8 @@ public class MainWin extends JFrame {
         mJava  .addActionListener(event -> onCreateJavaClick());
         mDonut .addActionListener(event -> onCreateDonutClick());
 	mCustomer .addActionListener(event -> onCreateCustomerClick());
+	mProducts .addActionListener(event -> onProductListClick());
+	mPeople .addActionListener(event -> onCustomerListClick());
         mAbout .addActionListener(event -> onAboutClick());
 
         
@@ -108,8 +110,8 @@ public class MainWin extends JFrame {
         mCreate.add(mJava);
         mCreate.add(mDonut);
 	mCreate.add(mCustomer);
-	mCreate.add(mProductList);
-	mCreate.add(mCustomerList);
+	mView.add(mProducts);
+	mView.add(mPeople);
 
         mHelp  .add(mAbout);
         
@@ -179,13 +181,13 @@ public class MainWin extends JFrame {
           bProductList.setActionCommand("List all products");
           bProductList.setToolTipText("");
           toolbar.add(bProductList);
-          //bDonut.addActionListener(event -> onProductListClick());
+          bProductList.addActionListener(event -> onProductListClick());
 
 	bCustomerList = new JButton(new ImageIcon("gui/resources/people_list.png"));
           bCustomerList.setActionCommand("List people");
           bCustomerList.setToolTipText("");
           toolbar.add(bCustomerList);
-          //bDonut.addActionListener(event -> onCustomerListClick());
+          bCustomerList.addActionListener(event -> onCustomerListClick());
 
 
         toolbar.add(Box.createHorizontalStrut(25));
@@ -341,7 +343,7 @@ public class MainWin extends JFrame {
             
     protected void onCreateCustomerClick() {  // Create a new Customer product
         try {
-            String name = getString("User name?");
+            String name = getString("Customer name?");
             String phone = getString("Phone number?");
             store.addPerson(new Person(name, phone));
             updateDisplay();
@@ -350,6 +352,24 @@ public class MainWin extends JFrame {
             msg.setText("Failed to create new User: " + e);
         }
     }
+
+    protected void onProductListClick() { // Display List of Products
+	    //updateDisplayProducts();
+	data.setText("<html>" + store.toString()
+                                     .replaceAll("<","&lt;")
+                                     .replaceAll(">", "&gt;")
+                                     .replaceAll("\n", "<br/>")
+                              + "</html>");
+	}
+
+    protected void onCustomerListClick() { // Display List of Customers
+	    //updateDisplayCustomers();
+	data.setText("<html>" + store.peopleToString()
+                                     .replaceAll("<","&lt;")
+                                     .replaceAll(">", "&gt;")
+                                     .replaceAll("\n", "<br/>")
+                              + "</html>");
+	}
 
     protected void onAboutClick() {                 // Display About dialog
         JDialog about = new JDialog();
@@ -457,13 +477,14 @@ public class MainWin extends JFrame {
         if(button == JOptionPane.CANCEL_OPTION) throw new CancelDialogException();
         return comboEnum.getSelectedItem();
     }
-    
+
     private void updateDisplay() {
         data.setText("<html>" + store.toString()
                                      .replaceAll("<","&lt;")
                                      .replaceAll(">", "&gt;")
                                      .replaceAll("\n", "<br/>")
-			      + store.peopleToString()
+			      + "<br>" +
+				store.peopleToString()
                                      .replaceAll("<","&lt;")
                                      .replaceAll(">", "&gt;")
                                      .replaceAll("\n", "<br/>")

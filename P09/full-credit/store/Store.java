@@ -34,7 +34,6 @@ public class Store {
         for(Product p : products)
             p.save(out);
     }
-
     String name() {return storeName;}
     public void addProduct(Product product) {
         products.add(product);
@@ -53,7 +52,7 @@ public class Store {
     }
     
     public String peopleToString() {
-	String result = "";
+	String result = "Welcome to " + storeName + "\n\n";
 	for(int i=0; i <people.size(); ++i) {
            result +=  i + ") " + people.get(i).toString() + "\n";
         }

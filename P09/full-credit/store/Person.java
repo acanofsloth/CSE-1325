@@ -25,7 +25,7 @@ public class Person {
     }
     @Override
     public String toString() {
-        String result = name + " " + phone;
+        String result = name + "  " + phone;
         return result;
     }
 
