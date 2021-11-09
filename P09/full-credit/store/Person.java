@@ -8,23 +8,27 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 
 public class Person {
-    public static final String ID = "store.Customer";
+
     public Person(String name, String phone) {
-        super(name, phone);
         this.name = name;
         this.phone = phone;
     }
 
-    public void addShot(Shot shot) {
-        shots.add(shot);
+    public Person(BufferedReader in) throws IOException {
+        this.name  = in.readLine();
+        this.phone = in.readLine();
     }
 
+    public void save(BufferedWriter out) throws IOException {
+        out.write("" + name  + '\n');
+        out.write("" + phone + '\n');
+    }
     @Override
     public String toString() {
-        String result = name + phone;
+        String result = name + " " + phone;
         return result;
     }
 
-    String name;
-    String phone;
+    protected String name;
+    protected String phone;
 }

@@ -13,6 +13,7 @@ public class Store {
     public Store(String storeName) {
         this.storeName = storeName;
         this.products = new ArrayList<>();
+	this.people = new ArrayList<>();
     }
     public Store(BufferedReader in) throws IOException {
         this(in.readLine());
@@ -22,6 +23,7 @@ public class Store {
             switch(productType) {
                 case Java.ID:  products.add(new Java(in));  break;
                 case Donut.ID: products.add(new Donut(in)); break;
+		case Customer.ID: people.add(new Customer(in)); break;
                 default: throw new IOException("Invalid product type: " + productType);
             }
         }
@@ -40,6 +42,23 @@ public class Store {
     public int numberOfProducts() {
         return products.size();
     }
+    public void addPerson(Person person) {
+        people.add(person);
+    }
+    public int numberOfPeople() {
+        return people.size();
+    }
+    public String personToString(int productIndex) {
+	return people.get(productIndex).toString();
+    }
+    
+    public String peopleToString() {
+	String result = "";
+	for(int i=0; i <people.size(); ++i) {
+           result +=  i + ") " + people.get(i).toString() + "\n";
+        }
+	return result;
+    }
     public String toString(int index) {
         return products.get(index).toString();
     }
@@ -53,4 +72,5 @@ public class Store {
     }
     private String storeName;
     private ArrayList<Product> products;
+    private ArrayList<Person> people;
 }

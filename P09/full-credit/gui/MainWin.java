@@ -45,6 +45,8 @@ import store.Filling;
 import store.Java;
 import store.Darkness;
 import store.Shot;
+import store.Person;
+import store.Customer;
 
 public class MainWin extends JFrame {
     private final String NAME = "JADE";
@@ -95,8 +97,6 @@ public class MainWin extends JFrame {
         mJava  .addActionListener(event -> onCreateJavaClick());
         mDonut .addActionListener(event -> onCreateDonutClick());
 	mCustomer .addActionListener(event -> onCreateCustomerClick());
-	mProductList .addActionListener(event -> onProductListClick());
-	mCustomerList .addActionListener(event -> onCustomerListClick());
         mAbout .addActionListener(event -> onAboutClick());
 
         
@@ -168,7 +168,7 @@ public class MainWin extends JFrame {
           bCustomer.setActionCommand("Create new customer");
           bCustomer.setToolTipText("");
           toolbar.add(bCustomer);
-          bDonut.addActionListener(event -> onCreateCustomerClick());
+          bCustomer.addActionListener(event -> onCreateCustomerClick());
 
 
 
@@ -179,13 +179,13 @@ public class MainWin extends JFrame {
           bProductList.setActionCommand("List all products");
           bProductList.setToolTipText("");
           toolbar.add(bProductList);
-          bDonut.addActionListener(event -> onProductListClick());
+          //bDonut.addActionListener(event -> onProductListClick());
 
 	bCustomerList = new JButton(new ImageIcon("gui/resources/people_list.png"));
           bCustomerList.setActionCommand("List people");
           bCustomerList.setToolTipText("");
           toolbar.add(bCustomerList);
-          bDonut.addActionListener(event -> onCustomerListClick());
+          //bDonut.addActionListener(event -> onCustomerListClick());
 
 
         toolbar.add(Box.createHorizontalStrut(25));
@@ -340,15 +340,15 @@ public class MainWin extends JFrame {
     }
             
     protected void onCreateCustomerClick() {  // Create a new Customer product
-        
-    }
-
-    protected void onProductListClick() {  // 
-        
-    }
-
-    protected void onCustomerListClick() {  // 
-        
+        try {
+            String name = getString("User name?");
+            String phone = getString("Phone number?");
+            store.addPerson(new Person(name, phone));
+            updateDisplay();
+        } catch (CancelDialogException e) { // ignore a Cancel
+        } catch(Exception e) {
+            msg.setText("Failed to create new User: " + e);
+        }
     }
 
     protected void onAboutClick() {                 // Display About dialog
@@ -460,6 +460,10 @@ public class MainWin extends JFrame {
     
     private void updateDisplay() {
         data.setText("<html>" + store.toString()
+                                     .replaceAll("<","&lt;")
+                                     .replaceAll(">", "&gt;")
+                                     .replaceAll("\n", "<br/>")
+			      + store.peopleToString()
                                      .replaceAll("<","&lt;")
                                      .replaceAll(">", "&gt;")
                                      .replaceAll("\n", "<br/>")
