@@ -5,19 +5,43 @@ public class Primes {
     public Primes(int numThreads) {
     }
     public Primes findPrimes(int lower, int upper) {
+	int test = 0; //square root value
+	while(lower < upper+1)
+	{
+		System.out.print(lower);
+		test = 1;
+		if(lower < 2){test = 0;}
+		for(int i = 2; i < Math.sqrt(lower)+1;i++) // test if prime number
+		{
+			if(lower%i == 0) // is not a prime number
+			{
+				test = 0;
+			}
+		}
+		if(lower == 2){test = 1;}
+		if(test == 1)
+		{
+			System.out.println(" is a Prime Number!");
+			//primes.add(lower);
+		}
+		else { System.out.println(); }
+		lower++;
+	}
         return this;    
     }
     public int numberOfPrimes() {
-        return 0; // replace
+	
+        return 0;//primes.size(); // replace
     }
     public Integer[] toArray() {
+	
         return new Integer[0]; // replace
     }
     
     public static void main(String[] args) {
         int numThreads = 1;
         int lower = 0;
-        int upper = 10000000; // defaults
+        int upper = 1000; // defaults
         if(args.length > 0) numThreads = Integer.parseInt(args[0]);
         if(args.length > 1) lower = Integer.parseInt(args[1]);
         if(args.length > 2) upper = Integer.parseInt(args[2]);
@@ -35,4 +59,7 @@ public class Primes {
                          + upper + " is " 
                          + NumberFormat.getIntegerInstance().format(sumOfPrimes));
     }
+
+    private ArrayList<Integer> primes;
+    private int numThreads;
 }
