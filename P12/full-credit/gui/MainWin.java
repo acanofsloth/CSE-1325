@@ -681,11 +681,144 @@ public class MainWin extends JFrame {
 		JOptionPane.QUESTION_MESSAGE, null, product_options_string,"abc");
 	if(product_options.get(button) instanceof Donut)
 	{
-		
+	    try {
+            // Name of Donut
+            JLabel lName = new JLabel("Name");
+            JTextField dName = new JTextField(20);
+
+            // Price
+            JLabel lPrice = new JLabel("<HTML><BR/>Price</HTML>");
+            JSpinner dPrice = new JSpinner(new SpinnerNumberModel(1.95, 0.0, 99.99, 0.05));
+
+            // Cost
+            JLabel lCost = new JLabel("<HTML><BR/>Cost</HTML>");
+            JSpinner dCost = new JSpinner(new SpinnerNumberModel(0.55, 0.0, 99.99, 0.05));
+
+            // Frosting
+            JLabel lFrosting = new JLabel("<HTML><BR/>Frosting</HTML>");
+            JComboBox<Object> dFrosting = new JComboBox<>(Frosting.values());
+
+            // Filling
+            JLabel lFilling = new JLabel("<HTML><BR/>Filling</HTML>");
+            JComboBox<Object> dFilling = new JComboBox<>(Filling.values());
+
+            // Sprinkles
+            String[] options = {"No Sprinkles", "Sprinkles"};
+            JLabel lSprinkles = new JLabel("<HTML><BR/>Sprinkles</HTML>");
+            JComboBox<Object> dSprinkles = new JComboBox<>(options);
+
+            Object[] objects = {
+                lName,      dName,
+                lPrice,     dPrice,
+                lCost,      dCost,
+                lFrosting,  dFrosting,
+                lFilling,   dFilling,
+                lSprinkles, dSprinkles,
+            };
+            
+            int button2 = JOptionPane.showConfirmDialog(
+                this,
+                objects,
+                "New Donut",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+            
+            if(button2 == JOptionPane.OK_OPTION) {
+                String name = dName.getText();
+                double price = (double) dPrice.getValue();
+                double cost = (double) dCost.getValue();
+                Frosting frosting = (Frosting) dFrosting.getSelectedItem();
+                Filling filling = (Filling) dFilling.getSelectedItem();
+                boolean sprinkles = (dSprinkles.getSelectedItem() == "Sprinkles");
+                store.updateProduct(new Donut(name, price, cost, 
+                                           frosting, filling, sprinkles), button);
+            }
+            updateDisplay(Display.PRODUCTS);
+        } catch(Exception e) {
+            msg.setText("Failed to create new Donut: " + e);
+        }
 	}
 	if(product_options.get(button) instanceof Java)
 	{
-		onCreateJavaClick();
+	    try {
+            // Name of Java
+            JLabel lName = new JLabel("Name");
+            JTextField dName = new JTextField(20);
+
+            // Price
+            JLabel lPrice = new JLabel("<HTML><BR/>Price</HTML>");
+            JSpinner dPrice = new JSpinner(new SpinnerNumberModel(3.95, 0.0, 99.99, 0.05));
+
+            // Cost
+            JLabel lCost = new JLabel("<HTML><BR/>Cost</HTML>");
+            JSpinner dCost = new JSpinner(new SpinnerNumberModel(0.95, 0.0, 99.99, 0.05));
+
+            // Darkness
+            JLabel lDarkness = new JLabel("<HTML><BR/>Darkness</HTML>");
+            JComboBox<Object> dDarkness = new JComboBox<>(Darkness.values());
+            
+            // Provide spacing to the Shots area
+            JLabel sShots = new JLabel("<HTML><BR/></HTML>");
+            
+            // Shots
+            JPanel shotPanel = new JPanel();
+            shotPanel.setLayout(new BoxLayout(shotPanel, BoxLayout.PAGE_AXIS));
+            
+            // This provides a scroll bar when a lot of shots are added
+            JScrollPane scrollingShotPanel = new JScrollPane(shotPanel);
+            scrollingShotPanel.setPreferredSize(new Dimension(200,120));
+            
+            // Prepopulate with 3 shot comboboxes
+            shotPanel.add(new JComboBox<Shot>(Shot.values()));
+            shotPanel.add(new JComboBox<Shot>(Shot.values()));
+            shotPanel.add(new JComboBox<Shot>(Shot.values()));
+            
+            // This button adds another combobox each time it's pressed
+            JButton addShot = new JButton("Add a Shot");
+            addShot.addActionListener(event -> {
+                shotPanel.add(new JComboBox<Shot>(Shot.values()));
+            });
+            
+            // Add components to a dialog
+
+            Object[] objects = {
+                lName,     dName,
+                lPrice,    dPrice,
+                lCost,     dCost,
+                lDarkness, dDarkness,
+                sShots,    
+                addShot,    scrollingShotPanel,
+            };
+            
+            int button3 = JOptionPane.showConfirmDialog(
+                this,
+                objects,
+                "New Java",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+            
+            if(button3 != JOptionPane.OK_OPTION) return;
+
+            String name = dName.getText();
+            double price = (double) dPrice.getValue();
+            double cost = (double) dCost.getValue();
+            Darkness darkness = (Darkness) dDarkness.getSelectedItem();
+            Java java = new Java(name, price, cost, darkness);
+            
+            for(Object o : shotPanel.getComponents()) {
+                if(!(o instanceof JComboBox)) continue; // verify cast will work, then
+                @SuppressWarnings("unchecked")          // skip unchecked cast warning
+                    JComboBox<Object> cb = (JComboBox<Object>) o;
+                Shot shot = (Shot) cb.getSelectedItem();
+                if(shot != Shot.None) java.addShot(shot);
+            }
+            store.updateProduct(java, button);
+            updateDisplay(Display.PRODUCTS);
+        } catch(Exception e) {
+            msg.setText("Failed to create new Java: " + e.getMessage());
+        }
 	}
     }  
          

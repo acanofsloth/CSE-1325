@@ -63,6 +63,11 @@ public class Store {
         return products.toArray();
     }
 
+    public void updateProduct(Product product, int index) {
+	products.set(index, product);
+    }
+
+
     // Orders
     public void addOrder(Order order) {
         if (order.numberOfProducts() < 1)
