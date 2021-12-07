@@ -67,6 +67,9 @@ public class Store {
 	products.set(index, product);
     }
 
+    public double getProductPrice(int index) {
+	return products.get(index).price;
+    }
 
     // Orders
     public void addOrder(Order order) {

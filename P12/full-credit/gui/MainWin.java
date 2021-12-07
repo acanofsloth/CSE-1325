@@ -102,6 +102,10 @@ public class MainWin extends JFrame {
         JMenuItem mPeople   = new JMenuItem("People");
         JMenu     mHelp     = new JMenu("Help");
         JMenuItem mAbout    = new JMenuItem("About");
+	JMenu     mEdit     = new JMenu("Edit");
+	JMenuItem mProduct     = new JMenuItem("Product");
+	JMenu     mPL     = new JMenu("P&L");
+	JMenuItem mReports    = new JMenuItem("Reports");
         
         mNew     .addActionListener(event -> onNewClick());
         mOpen    .addActionListener(event -> onOpenClick());
@@ -117,6 +121,8 @@ public class MainWin extends JFrame {
         mPeople  .addActionListener(event -> updateDisplay(Display.PEOPLE));
         mOrders  .addActionListener(event -> updateDisplay(Display.ORDERS));
         mAbout   .addActionListener(event -> onAboutClick());
+	mProduct .addActionListener(event -> onEditClick());
+	mReports .addActionListener(event -> onReportClick());
 
         
         mFile  .add(mNew);
@@ -131,12 +137,16 @@ public class MainWin extends JFrame {
         mView  .add(mProducts);
         mView  .add(mPeople);
         mHelp  .add(mAbout);
+	mEdit .add(mProduct);
+	mPL.add(mReports);
         
         menubar.add(mFile);
         menubar.add(mCreate);
         menubar.add(mView);
         menubar.add(mHelp);
-        
+	menubar.add(mEdit);
+	menubar.add(mPL);        
+
         setJMenuBar(menubar);
         
         // ///////////// //////////////////////////////////////////////////////////
@@ -231,7 +241,7 @@ public class MainWin extends JFrame {
           bReports.setActionCommand("Show Report");
           bReports.setToolTipText("Show Report");
           toolbar.add(bReports);
-          //bListPeople.addActionListener(event -> updateDisplay(Display.PEOPLE));
+          bReports.addActionListener(event -> onReportClick());
 
         toolbar.add(Box.createHorizontalStrut(25));
         
@@ -670,15 +680,15 @@ public class MainWin extends JFrame {
     protected void onEditClick() {
 	ArrayList<Product> product_options =store.getProductArray();
 	
-	String[] product_options_string = new String[product_options.size()];
+	String[] product_string = new String[product_options.size()];
 	
 	for(int i = 0; i < product_options.size();i++) {
-		product_options_string[i] = product_options.get(i).toString();
+		product_string[i] = product_options.get(i).toString();
 	}
 
 	int button = JOptionPane.showOptionDialog (
-		this, "Pick a product to change the value", "Edit Product", JOptionPane.DEFAULT_OPTION,
-		JOptionPane.QUESTION_MESSAGE, null, product_options_string,"abc");
+		this, "Pick a product to edit", "Edit Product", JOptionPane.DEFAULT_OPTION,
+		JOptionPane.QUESTION_MESSAGE, null, product_string,"a");
 	if(product_options.get(button) instanceof Donut)
 	{
 	    try {
@@ -822,6 +832,27 @@ public class MainWin extends JFrame {
 	}
     }  
          
+    protected void onReportClick() {
+		JLabel lName = new JLabel("Report");
+		double totalprice = 0;
+		ArrayList<Product> product_options =store.getProductArray();
+
+		for(int i = 0; i < product_options.size();i++) {
+			totalprice += store.getProductPrice(i);
+		}
+
+		JLabel lPrice = new JLabel("Total Price $"+totalprice);
+		Object[] objects = {lName, lPrice};
+		int button = JOptionPane.showConfirmDialog(
+                this,
+                objects,
+                "Reports",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+		
+	}
+
     protected void onAboutClick() {                 // Display About dialog
         JDialog about = new JDialog();
         about.getContentPane().setLayout(
